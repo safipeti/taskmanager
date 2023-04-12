@@ -2,84 +2,49 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTodoRequest;
 use App\Models\Todo;
-use Illuminate\Http\Request;
+use App\Repositories\Todo\TodoRepositoryInterface;
 
 class TodoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    protected $todoRepository;
+
+    public function __construct(TodoRepositoryInterface $todoRepository)
+    {
+        $this->todoRepository = $todoRepository;
+    }
+
     public function index()
     {
-        //
+       $date = request()->due_date ? date(request()->due_date) : date('Y-m-d');
+
+
+       $todos = $this->todoRepository->getAll($date);
+
+       return response()->json($todos, 201);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(StoreTodoRequest $request)
     {
-        //
+        $todo = Todo::create($request->all());
+
+        return response()->json($todo, 201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Todo  $todo
-     * @return \Illuminate\Http\Response
-     */
     public function show(Todo $todo)
     {
-        //
+        return $this->todoRepository->find($todo->id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Todo  $todo
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Todo $todo)
+    public function update(StoreTodoRequest $request, Todo $todo)
     {
-        //
+        return $this->todoRepository->update($todo, $request->all());
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Todo  $todo
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Todo $todo)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Todo  $todo
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Todo $todo)
     {
-        //
+        return $this->todoRepository->delete($todo->id);
     }
 }

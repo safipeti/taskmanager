@@ -15,9 +15,12 @@ class TodoRepository implements TodoRepositoryInterface
         $this->todo = $todo;
     }
 
-    public function getAll()
+    public function getAll($date)
     {
-        return $this->todo->with('subTodos')->where('parent_id', null)->get();
+        return $this->todo->with('subTodos')
+        ->where('parent_id', null)
+        ->where('due_date', $date)
+        ->get();
     }
 
 
@@ -26,11 +29,26 @@ class TodoRepository implements TodoRepositoryInterface
         return $this->todo->find($id);
     }
 
+    public function create($details)
+    {
+        return Todo::create($details);
+    }
+
+    public function update(Todo $todo, $details)
+    {
+        return $todo->update($details);
+    }
+
+    public function toggleDone(Todo $todo) 
+    {
+
+        return $this->todo->done = !$this->todo->done;
+    }
+
 
     public function delete($id)
     {
-        return $this->todo->delete($id);
+        return $this->todo->destroy($id);
     }
-
 
 }
