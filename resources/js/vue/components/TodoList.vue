@@ -1,5 +1,5 @@
 <template>
-    <date-picker></date-picker>
+    <date-picker @dateChanged="getTodos"></date-picker>
     <ul class="list-group">
         <li
             v-for="todo in todos"
@@ -26,8 +26,19 @@ export default {
     },
 
     methods: {
-        getTodos() {
-            axios.get("api/todos").then((resp) => {
+        getTodos(date) {
+            let due_date;
+
+            if (date) {
+                due_date = `${date.getFullYear()}-${(date.getMonth() + 1)
+                    .toString()
+                    .padStart(2, "0")}-${date
+                    .getDate()
+                    .toString()
+                    .padStart(2, "0")}`;
+            }
+
+            axios.get(`api/todos?due_date=${due_date}`).then((resp) => {
                 this.todos = resp.data;
             });
         },

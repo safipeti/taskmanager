@@ -5,8 +5,9 @@
         </button>
         <vue-date-picker
             v-model="date"
-            format="Y-mm-dd"
+            format="yyy-MM-dd"
             show-now-button
+            @update:model-value="dateChanged"
         ></vue-date-picker>
         <button type="button" class="btn btn-primary" v-on:click="addOneDay">
             forward
@@ -28,9 +29,14 @@ export default {
     methods: {
         addOneDay() {
             this.date = new Date(this.date.setDate(this.date.getDate() + 1));
+            this.$emit("dateChanged", this.date);
         },
         minusOneDay() {
             this.date = new Date(this.date.setDate(this.date.getDate() - 1));
+            this.$emit("dateChanged", this.date);
+        },
+        dateChanged() {
+            this.$emit("dateChanged", this.date);
         },
     },
 };

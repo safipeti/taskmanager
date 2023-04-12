@@ -19515,9 +19515,14 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     addOneDay: function addOneDay() {
       this.date = new Date(this.date.setDate(this.date.getDate() + 1));
+      this.$emit("dateChanged", this.date);
     },
     minusOneDay: function minusOneDay() {
       this.date = new Date(this.date.setDate(this.date.getDate() - 1));
+      this.$emit("dateChanged", this.date);
+    },
+    dateChanged: function dateChanged() {
+      this.$emit("dateChanged", this.date);
     }
   }
 });
@@ -19548,9 +19553,13 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    getTodos: function getTodos() {
+    getTodos: function getTodos(date) {
       var _this = this;
-      axios.get("api/todos").then(function (resp) {
+      var due_date;
+      if (date) {
+        due_date = "".concat(date.getFullYear(), "-").concat((date.getMonth() + 1).toString().padStart(2, "0"), "-").concat(date.getDate().toString().padStart(2, "0"));
+      }
+      axios.get("api/todos?due_date=".concat(due_date)).then(function (resp) {
         _this.todos = resp.data;
       });
     }
@@ -19626,12 +19635,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, " back "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vue_date_picker, {
     modelValue: $data.date,
-    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+    "onUpdate:modelValue": [_cache[1] || (_cache[1] = function ($event) {
       return $data.date = $event;
-    }),
-    format: "Y-mm-dd",
+    }), $options.dateChanged],
+    format: "yyy-MM-dd",
     "show-now-button": ""
-  }, null, 8 /* PROPS */, ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, null, 8 /* PROPS */, ["modelValue", "onUpdate:modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-primary",
     onClick: _cache[2] || (_cache[2] = function () {
@@ -19672,7 +19681,9 @@ var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_date_picker = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("date-picker");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_date_picker), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.todos, function (todo) {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_date_picker, {
+    onDateChanged: $options.getTodos
+  }, null, 8 /* PROPS */, ["onDateChanged"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.todos, function (todo) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
       key: todo.id,
       "class": "list-group-item d-flex justify-content-between align-items-center"
