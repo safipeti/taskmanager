@@ -15,4 +15,6 @@ interface TodoRepositoryInterface
     public function create($details);
 
     public function update(Todo $todo, $details);
+
+    public function setTaskDone($id);
 }

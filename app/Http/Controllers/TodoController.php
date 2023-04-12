@@ -47,4 +47,12 @@ class TodoController extends Controller
     {
         return $this->todoRepository->delete($todo->id);
     }
+
+    public function setTaskDone() {
+
+        $id = \request()->get('id');
+
+        return $this->todoRepository->setTaskDone($id);
+
+    }
 }

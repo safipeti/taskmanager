@@ -39,10 +39,12 @@ class TodoRepository implements TodoRepositoryInterface
         return $todo->update($details);
     }
 
-    public function toggleDone(Todo $todo) 
+    public function setTaskDone($id) 
     {
-
-        return $this->todo->done = !$this->todo->done;
+        $todo = Todo::find($id);
+        $todo->done = true;
+        $todo->save();
+        return $todo;
     }
 
 
