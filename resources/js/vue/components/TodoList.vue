@@ -8,7 +8,18 @@
         >
             {{ todo.name }}
             <span class="badge badge-primary badge-pill">1004</span>
-            <button type="button" class="btn btn-primary">Feladatok</button>
+            <button
+                type="button"
+                class="btn btn-primary"
+                @click="
+                    $emit('changeComponent', {
+                        todo: todo,
+                        component: 'todo-details',
+                    })
+                "
+            >
+                Feladatok
+            </button>
             <button type="button" class="btn btn-warning">Módosítás</button>
         </li>
     </ul>
@@ -19,6 +30,7 @@ import DatePicker from "./DatePicker.vue";
 export default {
     name: "TodoList",
     components: { DatePicker },
+    emits: ["changeComponent"],
     data() {
         return {
             todos: {},

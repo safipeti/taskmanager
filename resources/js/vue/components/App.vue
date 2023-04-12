@@ -6,7 +6,11 @@
                     <div class="card-header">Title</div>
 
                     <div class="card-body">
-                        <todo-list></todo-list>
+                        <component
+                            :todo="todo"
+                            :is="currentComponent"
+                            @changeComponent="changeComponent"
+                        ></component>
                     </div>
                 </div>
             </div>
@@ -16,8 +20,25 @@
 
 <script>
 import TodoList from "./TodoList.vue";
+import TodoDetails from "./TodoDetails.vue";
+
 export default {
-    components: { TodoList },
+    components: { TodoList, TodoDetails },
+    data() {
+        return {
+            currentComponent: "todo-list",
+            todo: null,
+        };
+    },
+
+    methods: {
+        changeComponent(data) {
+            data = JSON.parse(JSON.stringify(data));
+            console.log(data.todo);
+            this.currentComponent = data.component;
+            this.todo = data.todo;
+        },
+    },
 };
 </script>
 
