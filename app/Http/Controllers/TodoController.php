@@ -45,7 +45,6 @@ class TodoController extends Controller
 
     public function destroy(Todo $todo)
     {
-        return $this->todoRepository->delete(58);
         return $this->todoRepository->delete($todo->id);
     }
 }
