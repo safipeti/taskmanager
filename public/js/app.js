@@ -19611,7 +19611,19 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     TaskList: _TaskList__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  props: ["todo"]
+  props: ["todo"],
+  computed: {
+    activeTasks: function activeTasks() {
+      return this.todo.sub_todos.filter(function (x) {
+        return !x.done;
+      }).length;
+    },
+    doneTasks: function doneTasks() {
+      return this.todo.sub_todos.filter(function (x) {
+        return x.done;
+      }).length;
+    }
+  }
 });
 
 /***/ }),
@@ -19819,9 +19831,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
+var _hoisted_1 = {
+  key: 0
+};
+var _hoisted_2 = {
+  key: 1
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_task_list = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("task-list");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.todo.name) + " - Időpont: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.todo.due_date), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_task_list, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.todo.name) + " - Időpont: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.todo.due_date), 1 /* TEXT */), $props.todo.sub_todos.length ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h4", _hoisted_1, " Feladatok: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.todo.sub_todos.length) + " | Aktív: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.activeTasks) + " | Kész: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.doneTasks), 1 /* TEXT */)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("h4", _hoisted_2, "Nincs feladat")), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_task_list, {
     tasklist: $props.todo.sub_todos
   }, null, 8 /* PROPS */, ["tasklist"])], 64 /* STABLE_FRAGMENT */);
 }
