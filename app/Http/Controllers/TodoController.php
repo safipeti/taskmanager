@@ -28,7 +28,7 @@ class TodoController extends Controller
 
     public function store(StoreTodoRequest $request)
     {
-        $todo = Todo::create($request->all());
+        $todo = $this->todoRepository->create($request->all());
 
         return response()->json($todo, 201);
     }
@@ -45,6 +45,7 @@ class TodoController extends Controller
 
     public function destroy(Todo $todo)
     {
+        return $this->todoRepository->delete(58);
         return $this->todoRepository->delete($todo->id);
     }
 }
