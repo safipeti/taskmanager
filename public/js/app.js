@@ -19646,8 +19646,11 @@ __webpack_require__.r(__webpack_exports__);
       var due_date;
       if (date) {
         due_date = "".concat(date.getFullYear(), "-").concat((date.getMonth() + 1).toString().padStart(2, "0"), "-").concat(date.getDate().toString().padStart(2, "0"));
+        axios.get("api/todos?due_date=".concat(due_date)).then(function (resp) {
+          _this.todos = resp.data;
+        });
       }
-      axios.get("api/todos?due_date=".concat(due_date)).then(function (resp) {
+      axios.get("api/todos").then(function (resp) {
         _this.todos = resp.data;
       });
     }
@@ -19686,7 +19689,7 @@ var _hoisted_4 = {
 };
 var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "card-header"
-}, "Title", -1 /* HOISTED */);
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "Feladatkezelő")], -1 /* HOISTED */);
 var _hoisted_6 = {
   "class": "card-body"
 };
@@ -19815,7 +19818,7 @@ __webpack_require__.r(__webpack_exports__);
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_task_list = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("task-list");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.todo.name) + " - Időpont: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.todo.due_date), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_task_list, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.todo.name) + " - Időpont: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.todo.due_date), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_task_list, {
     tasklist: $props.todo.sub_todos
   }, null, 8 /* PROPS */, ["tasklist"])], 64 /* STABLE_FRAGMENT */);
 }

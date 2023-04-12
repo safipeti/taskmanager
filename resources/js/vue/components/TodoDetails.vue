@@ -1,5 +1,5 @@
 <template>
-    <h1>{{ todo.name }} - Időpont: {{ todo.due_date }}</h1>
+    <h3>{{ todo.name }} - Időpont: {{ todo.due_date }}</h3>
     <task-list :tasklist="todo.sub_todos"></task-list>
 </template>
 

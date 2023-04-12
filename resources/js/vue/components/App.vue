@@ -3,7 +3,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Title</div>
+                    <div class="card-header"><h1>Feladatkezelő</h1></div>
 
                     <div class="card-body">
                         <component
