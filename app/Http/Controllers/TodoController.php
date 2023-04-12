@@ -43,9 +43,10 @@ class TodoController extends Controller
         return $this->todoRepository->update($todo, $request->all());
     }
 
-    public function destroy(Todo $todo)
+    public function deletetask()
     {
-        return $this->todoRepository->delete($todo->id);
+        $id = \request()->get('id');
+        return $this->todoRepository->delete($id);
     }
 
     public function setTaskDone() {

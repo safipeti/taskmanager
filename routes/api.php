@@ -22,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('todos', TodoController::class);
 
 Route::post('settaskdone', [TodoController::class, 'setTaskDone'])->name('todo.setTaskDone');
+Route::post('deletetask', [TodoController::class, 'deleteTask'])->name('todo.setTaskDone');
