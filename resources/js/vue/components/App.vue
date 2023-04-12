@@ -5,7 +5,9 @@
                 <div class="card">
                     <div class="card-header">Title</div>
 
-                    <div class="card-body">Todo App - Task manager</div>
+                    <div class="card-body">
+                        <todo-list></todo-list>
+                    </div>
                 </div>
             </div>
         </div>
@@ -13,7 +15,10 @@
 </template>
 
 <script>
-export default {};
+import TodoList from "./TodoList.vue";
+export default {
+    components: { TodoList },
+};
 </script>
 
 <style></style>

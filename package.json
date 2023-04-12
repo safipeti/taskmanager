@@ -17,6 +17,7 @@
         "vue-loader": "^16.8.3"
     },
     "dependencies": {
+        "@vuepic/vue-datepicker": "^4.3.0",
         "git": "^0.1.5",
         "status": "0.0.13",
         "vue": "^3.2.36"
