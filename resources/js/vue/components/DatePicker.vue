@@ -1,7 +1,7 @@
 <template>
     <div class="dp-container">
         <button type="button" class="btn btn-primary" v-on:click="minusOneDay">
-            back
+            -
         </button>
         <vue-date-picker
             v-model="date"
@@ -10,7 +10,7 @@
             @update:model-value="dateChanged"
         ></vue-date-picker>
         <button type="button" class="btn btn-primary" v-on:click="addOneDay">
-            forward
+            +
         </button>
     </div>
 </template>

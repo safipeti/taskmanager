@@ -51,11 +51,11 @@ export default {
                 axios.get(`api/todos?due_date=${due_date}`).then((resp) => {
                     this.todos = resp.data;
                 });
+            } else {
+                axios.get(`api/todos`).then((resp) => {
+                    this.todos = resp.data;
+                });
             }
-
-            axios.get(`api/todos`).then((resp) => {
-                this.todos = resp.data;
-            });
         },
     },
 

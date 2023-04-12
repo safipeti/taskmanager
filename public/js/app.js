@@ -19649,10 +19649,11 @@ __webpack_require__.r(__webpack_exports__);
         axios.get("api/todos?due_date=".concat(due_date)).then(function (resp) {
           _this.todos = resp.data;
         });
+      } else {
+        axios.get("api/todos").then(function (resp) {
+          _this.todos = resp.data;
+        });
       }
-      axios.get("api/todos").then(function (resp) {
-        _this.todos = resp.data;
-      });
     }
   },
   created: function created() {
@@ -19689,7 +19690,9 @@ var _hoisted_4 = {
 };
 var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "card-header"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, "Feladatkezelő")], -1 /* HOISTED */);
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  href: ""
+}, "Feladatkezelő")])], -1 /* HOISTED */);
 var _hoisted_6 = {
   "class": "card-body"
 };
@@ -19726,7 +19729,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[0] || (_cache[0] = function () {
       return $options.minusOneDay && $options.minusOneDay.apply($options, arguments);
     })
-  }, " back "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vue_date_picker, {
+  }, " - "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vue_date_picker, {
     modelValue: $data.date,
     "onUpdate:modelValue": [_cache[1] || (_cache[1] = function ($event) {
       return $data.date = $event;
@@ -19739,7 +19742,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[2] || (_cache[2] = function () {
       return $options.addOneDay && $options.addOneDay.apply($options, arguments);
     })
-  }, " forward ")]);
+  }, " + ")]);
 }
 
 /***/ }),
