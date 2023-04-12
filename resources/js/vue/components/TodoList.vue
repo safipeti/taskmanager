@@ -20,7 +20,18 @@
             >
                 Feladatok
             </button>
-            <button type="button" class="btn btn-warning">Módosítás</button>
+            <button
+                type="button"
+                class="btn btn-warning"
+                @click="
+                    $emit('changeComponent', {
+                        todo: todo,
+                        component: 'todo-edit',
+                    })
+                "
+            >
+                Módosítás
+            </button>
         </li>
     </ul>
 </template>

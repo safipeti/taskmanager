@@ -6,6 +6,18 @@
     </h4>
     <h4 v-else>Nincs feladat</h4>
     <task-list :tasklist="todo.sub_todos"></task-list>
+    <button
+        type="button"
+        class="btn btn-warning"
+        @click="
+            $emit('changeComponent', {
+                todo: null,
+                component: 'todo-list',
+            })
+        "
+    >
+        Vissza
+    </button>
 </template>
 
 <script>

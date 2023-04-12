@@ -28,18 +28,6 @@
             </button>
         </li>
     </ul>
-    <button
-        type="button"
-        class="btn btn-warning"
-        @click="
-            $emit('changeComponent', {
-                todo: null,
-                component: 'todo-list',
-            })
-        "
-    >
-        Vissza
-    </button>
 </template>
 
 <script>

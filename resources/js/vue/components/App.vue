@@ -23,9 +23,10 @@
 <script>
 import TodoList from "./TodoList.vue";
 import TodoDetails from "./TodoDetails.vue";
+import TodoEdit from "./TodoEdit.vue";
 
 export default {
-    components: { TodoList, TodoDetails },
+    components: { TodoList, TodoDetails, TodoEdit },
     data() {
         return {
             currentComponent: "todo-list",
