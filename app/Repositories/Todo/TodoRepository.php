@@ -20,6 +20,7 @@ class TodoRepository implements TodoRepositoryInterface
         return $this->todo->with('subTodos')
         ->where('parent_id', null)
         ->where('due_date', $date)
+        ->orderBy('created_at', 'DESC')
         ->get();
     }
 
