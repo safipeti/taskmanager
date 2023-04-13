@@ -55,7 +55,8 @@ export default {
         removeFromUi(id) {
             this.tasklist.forEach((element) => {
                 if (element["id"] == id) {
-                    this.tasklist.splice(element, 1);
+                    const idx = this.tasklist.indexOf(element);
+                    this.tasklist.splice(idx, 1);
                 }
             });
         },
@@ -64,7 +65,6 @@ export default {
             axios.post("api/deletetask", {
                 id,
             });
-
             this.removeFromUi(id);
         },
     },
