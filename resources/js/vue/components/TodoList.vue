@@ -21,7 +21,6 @@
             class="list-group-item d-flex justify-content-between align-items-center"
         >
             {{ todo.name }}
-            <span class="badge badge-primary badge-pill">1004</span>
             <button
                 type="button"
                 class="btn btn-primary"

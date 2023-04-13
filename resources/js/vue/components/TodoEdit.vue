@@ -4,57 +4,20 @@
     <div v-if="validationError" class="alert alert-danger" role="alert">
         A teendő nevének és leíásának megadása kötelező!
     </div>
-    <div class="mb-3">
-        <label for="name" class="form-label">Teendő neve</label>
-        <input
-            type="email"
-            class="form-control"
-            id="name"
-            placeholder=""
-            v-model="todo.name"
-        />
-    </div>
-    <div class="mb-3">
-        <label for="description" class="form-label">Teendő leíása</label>
-        <textarea
-            class="form-control"
-            id="description"
-            rows="3"
-            v-model="todo.description"
-        ></textarea>
-        <div v-if="!todo.id">
-            <label for="description" class="form-label">Teendő napja</label>
-            <vue-date-picker
-                v-model="date"
-                format="yyy-MM-dd"
-                show-now-button
-            ></vue-date-picker>
-        </div>
-
-        <div class="btn-controls">
-            <button type="button" class="btn btn-primary" @click="submit">
-                Mentés
-            </button>
-            <button type="button" class="btn btn-warning" @click="cancel">
-                Elvetés
-            </button>
-            <button
-                v-if="todo.id"
-                type="button"
-                class="btn btn-danger"
-                @click="deleteTask(todo.id)"
-            >
-                Törlés
-            </button>
-        </div>
-    </div>
+    <todo-form
+        :todo="todo"
+        @submit="submit"
+        @cancel="cancel"
+        @deleteTask="deleteTask"
+    ></todo-form>
 </template>
 
 <script>
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
+import TodoForm from "./TodoForm.vue";
 export default {
-    components: { VueDatePicker },
+    components: { VueDatePicker, TodoForm },
     props: ["todo"],
     data() {
         return {
@@ -86,9 +49,7 @@ export default {
                         .toString()
                         .padStart(2, "0")}`;
 
-                    axios.post(`api/todos`, data).then((data) => {
-                        this.updated = JSON.parse(JSON.stringify(data));
-                    });
+                    axios.post(`api/todos`, data);
                 } else {
                     axios.put(`api/todos/${this.todo.id}`, data);
                 }
