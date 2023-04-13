@@ -1,30 +1,98 @@
 <template>
-    <h3>{{ todo.name }} - Időpont: {{ todo.due_date }}</h3>
+    <div class="flexbox">
+        <h3>{{ todo.name }} - Időpont: {{ todo.due_date }}</h3>
+        <button
+            type="button"
+            class="btn btn-warning"
+            @click="
+                $emit('changeComponent', {
+                    todo: null,
+                    component: 'todo-list',
+                })
+            "
+        >
+            Vissza
+        </button>
+    </div>
     <h4 v-if="todo.sub_todos.length">
         Feladatok: {{ todo.sub_todos.length }} | Aktív: {{ activeTasks }} |
         Kész: {{ doneTasks }}
     </h4>
     <h4 v-else>Nincs feladat</h4>
+    <div v-if="validationError" class="alert alert-danger" role="alert">
+        A feladat nevének és leíásának megadása kötelező!
+    </div>
+    <div class="mb-3">
+        <label for="name" class="form-label">Feladat neve</label>
+        <input
+            type="text"
+            class="form-control"
+            id="name"
+            placeholder=""
+            v-model="taskName"
+        />
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Feladat leíása</label>
+        <textarea
+            class="form-control"
+            id="description"
+            rows="3"
+            v-model="taskDescription"
+        ></textarea>
+
+        <div class="btn-controls">
+            <button type="button" class="btn btn-primary" @click="addTask">
+                Mentés
+            </button>
+        </div>
+    </div>
+
     <task-list :tasklist="todo.sub_todos"></task-list>
-    <button
-        type="button"
-        class="btn btn-warning"
-        @click="
-            $emit('changeComponent', {
-                todo: null,
-                component: 'todo-list',
-            })
-        "
-    >
-        Vissza
-    </button>
 </template>
 
 <script>
 import TaskList from "./TaskList";
+import TodoForm from "./TodoForm.vue";
+
 export default {
-    components: { TaskList },
+    data() {
+        return {
+            taskName: "",
+            taskDescription: "",
+            validationError: false,
+        };
+    },
+
+    components: { TaskList, TodoForm },
     props: ["todo"],
+
+    methods: {
+        addTask() {
+            if (this.taskName == "" || this.taskDescription == "") {
+                this.validationError = true;
+                setTimeout(() => {
+                    this.validationError = false;
+                }, 3000);
+            } else {
+                const task = {
+                    parent_id: this.todo.id,
+                    name: this.taskName,
+                    description: this.taskDescription,
+                };
+
+                axios.post(`api/todos`, task).then(() => {
+                    this.todo.sub_todos.push({
+                        parent_id: this.todo.id,
+                        name: this.taskName,
+                        description: this.taskDescription,
+                    });
+                    this.taskName = "";
+                    this.taskDescription = "";
+                });
+            }
+        },
+    },
 
     computed: {
         activeTasks() {
@@ -37,4 +105,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.flexbox {
+    display: flex;
+    justify-content: space-between;
+}
+</style>
