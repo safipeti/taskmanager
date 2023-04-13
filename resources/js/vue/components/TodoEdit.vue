@@ -23,11 +23,11 @@ export default {
         return {
             validationError: false,
             date: new Date(),
-            updated: null,
         };
     },
     methods: {
-        submit() {
+        submit(obj) {
+            this.date = obj.date;
             if (!this.todo.name || !this.todo.description) {
                 this.validationError = true;
                 setTimeout(() => {

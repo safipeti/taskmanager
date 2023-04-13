@@ -16,7 +16,12 @@
             >
                 Elkészült
             </button>
-            <button v-if="!task.done" type="button" class="btn btn-warning">
+            <button
+                @click="$emit('loadTask', task)"
+                v-if="!task.done"
+                type="button"
+                class="btn btn-warning"
+            >
                 Módosítás
             </button>
             <button
@@ -34,7 +39,7 @@
 export default {
     name: "TaskList",
     props: ["tasklist"],
-    emits: ["changeComponent"],
+    emits: ["changeComponent", "loadTask"],
     methods: {
         setDone(id) {
             axios.post("api/settaskdone", {

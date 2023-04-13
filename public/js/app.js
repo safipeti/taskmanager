@@ -19563,7 +19563,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "TaskList",
   props: ["tasklist"],
-  emits: ["changeComponent"],
+  emits: ["changeComponent", "loadTask"],
   methods: {
     setDone: function setDone(id) {
       axios.post("api/settaskdone", {
@@ -19582,7 +19582,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
       this.tasklist.forEach(function (element) {
         if (element["id"] == id) {
-          _this.tasklist.splice(element, 1);
+          var idx = _this.tasklist.indexOf(element);
+          _this.tasklist.splice(idx, 1);
         }
       });
     },
@@ -19615,6 +19616,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      taskId: null,
       taskName: "",
       taskDescription: "",
       validationError: false
@@ -19635,20 +19637,40 @@ __webpack_require__.r(__webpack_exports__);
         }, 3000);
       } else {
         var task = {
-          parent_id: this.todo.id,
           name: this.taskName,
           description: this.taskDescription
         };
-        axios.post("api/todos", task).then(function () {
-          _this.todo.sub_todos.push({
-            parent_id: _this.todo.id,
-            name: _this.taskName,
-            description: _this.taskDescription
+        if (!this.taskId) {
+          task["parent_id"] = this.todo.id;
+          axios.post("api/todos", task).then(function (x) {
+            _this.todo.sub_todos.push({
+              id: x.data.id,
+              parent_id: _this.todo.id,
+              name: _this.taskName,
+              description: _this.taskDescription
+            });
+            _this.taskName = "";
+            _this.taskDescription = "";
           });
-          _this.taskName = "";
-          _this.taskDescription = "";
-        });
+        } else {
+          axios.put("api/todos/".concat(this.taskId), task).then(function () {
+            _this.todo.sub_todos.forEach(function (element) {
+              if (element["id"] == _this.taskId) {
+                console.log(element["id"], "-", _this.taskId);
+                element["name"] = _this.taskName;
+                element["description"] = _this.taskDescription;
+              }
+            });
+            _this.taskName = "";
+            _this.taskDescription = "";
+          });
+        }
       }
+    },
+    loadTask: function loadTask(task) {
+      this.taskId = task.id;
+      this.taskName = task.name;
+      this.taskDescription = task.description;
     }
   },
   computed: {
@@ -19693,13 +19715,13 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       validationError: false,
-      date: new Date(),
-      updated: null
+      date: new Date()
     };
   },
   methods: {
-    submit: function submit() {
+    submit: function submit(obj) {
       var _this = this;
+      this.date = obj.date;
       if (!this.todo.name || !this.todo.description) {
         this.validationError = true;
         setTimeout(function () {
@@ -19754,9 +19776,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _vuepic_vue_datepicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @vuepic/vue-datepicker */ "./node_modules/@vuepic/vue-datepicker/dist/vue-datepicker.js");
+/* harmony import */ var _vuepic_vue_datepicker_dist_main_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @vuepic/vue-datepicker/dist/main.css */ "./node_modules/@vuepic/vue-datepicker/dist/main.css");
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    VueDatePicker: _vuepic_vue_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   props: ["todo"],
-  emits: ["submit", "cancel", "deleteTask"]
+  emits: ["submit", "cancel", "deleteTask"],
+  data: function data() {
+    return {
+      date: new Date()
+    };
+  }
 });
 
 /***/ }),
@@ -19910,11 +19944,7 @@ var _hoisted_1 = {
   "class": "list-group"
 };
 var _hoisted_2 = ["onClick"];
-var _hoisted_3 = {
-  key: 1,
-  type: "button",
-  "class": "btn btn-warning"
-};
+var _hoisted_3 = ["onClick"];
 var _hoisted_4 = ["onClick"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return $props.tasklist ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("ul", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.tasklist, function (task) {
@@ -19930,7 +19960,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.setDone(task.id);
       }
-    }, " Elkészült ", 8 /* PROPS */, _hoisted_2)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), !task.done ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", _hoisted_3, " Módosítás ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }, " Elkészült ", 8 /* PROPS */, _hoisted_2)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), !task.done ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      key: 1,
+      onClick: function onClick($event) {
+        return _ctx.$emit('loadTask', task);
+      },
+      type: "button",
+      "class": "btn btn-warning"
+    }, " Módosítás ", 8 /* PROPS */, _hoisted_3)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       type: "button",
       "class": "btn btn-danger",
       onClick: function onClick($event) {
@@ -20019,8 +20056,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.addTask && $options.addTask.apply($options, arguments);
     })
   }, " Mentés ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_task_list, {
+    onLoadTask: $options.loadTask,
     tasklist: $props.todo.sub_todos
-  }, null, 8 /* PROPS */, ["tasklist"])], 64 /* STABLE_FRAGMENT */);
+  }, null, 8 /* PROPS */, ["onLoadTask", "tasklist"])], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -20116,9 +20154,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $props.todo.description = $event;
     })
   }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $props.todo.description]]), !$props.todo.id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_5, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_vue_date_picker, {
-    modelValue: _ctx.date,
+    modelValue: $data.date,
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
-      return _ctx.date = $event;
+      return $data.date = $event;
     }),
     format: "yyy-MM-dd",
     "show-now-button": ""
@@ -20126,7 +20164,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "button",
     "class": "btn btn-primary",
     onClick: _cache[3] || (_cache[3] = function ($event) {
-      return _ctx.$emit('submit', $props.todo);
+      return _ctx.$emit('submit', {
+        todo: $props.todo,
+        date: $data.date
+      });
     })
   }, " Mentés "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",

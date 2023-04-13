@@ -48,7 +48,7 @@
         </div>
     </div>
 
-    <task-list :tasklist="todo.sub_todos"></task-list>
+    <task-list @loadTask="loadTask" :tasklist="todo.sub_todos"></task-list>
 </template>
 
 <script>
@@ -58,6 +58,7 @@ import TodoForm from "./TodoForm.vue";
 export default {
     data() {
         return {
+            taskId: null,
             taskName: "",
             taskDescription: "",
             validationError: false,
@@ -76,21 +77,42 @@ export default {
                 }, 3000);
             } else {
                 const task = {
-                    parent_id: this.todo.id,
                     name: this.taskName,
                     description: this.taskDescription,
                 };
-
-                axios.post(`api/todos`, task).then(() => {
-                    this.todo.sub_todos.push({
-                        parent_id: this.todo.id,
-                        name: this.taskName,
-                        description: this.taskDescription,
+                if (!this.taskId) {
+                    task["parent_id"] = this.todo.id;
+                    axios.post(`api/todos`, task).then((x) => {
+                        this.todo.sub_todos.push({
+                            id: x.data.id,
+                            parent_id: this.todo.id,
+                            name: this.taskName,
+                            description: this.taskDescription,
+                        });
+                        this.taskName = "";
+                        this.taskDescription = "";
                     });
-                    this.taskName = "";
-                    this.taskDescription = "";
-                });
+                } else {
+                    axios.put(`api/todos/${this.taskId}`, task).then(() => {
+                        this.todo.sub_todos.forEach((element) => {
+                            if (element["id"] == this.taskId) {
+                                console.log(element["id"], "-", this.taskId);
+                                element["name"] = this.taskName;
+                                element["description"] = this.taskDescription;
+                            }
+                        });
+
+                        this.taskName = "";
+                        this.taskDescription = "";
+                    });
+                }
             }
+        },
+
+        loadTask(task) {
+            this.taskId = task.id;
+            this.taskName = task.name;
+            this.taskDescription = task.description;
         },
     },
 

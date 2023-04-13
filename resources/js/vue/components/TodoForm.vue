@@ -30,7 +30,7 @@
             <button
                 type="button"
                 class="btn btn-primary"
-                @click="$emit('submit', todo)"
+                @click="$emit('submit', { todo, date })"
             >
                 Mentés
             </button>
@@ -54,9 +54,17 @@
 </template>
 
 <script>
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
 export default {
+    components: { VueDatePicker },
     props: ["todo"],
     emits: ["submit", "cancel", "deleteTask"],
+    data() {
+        return {
+            date: new Date(),
+        };
+    },
 };
 </script>
 
