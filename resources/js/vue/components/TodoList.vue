@@ -1,5 +1,19 @@
 <template>
     <date-picker @dateChanged="getTodos"></date-picker>
+    <div class="btn-control center">
+        <button
+            @click="
+                $emit('changeComponent', {
+                    todo: { name, desciption },
+                    component: 'todo-edit',
+                })
+            "
+            type="button"
+            class="btn btn-success"
+        >
+            + Új teendő felvétele
+        </button>
+    </div>
     <ul class="list-group">
         <li
             v-for="todo in todos"
@@ -76,4 +90,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.btn-control.center {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+</style>
